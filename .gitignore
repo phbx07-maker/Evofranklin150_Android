@@ -1,2 +1,13 @@
-
+.gradle/
+.idea/
+local.properties
+build/
+app/build/
+.externalNativeBuild/
+.cxx/
+captures/
+*.iml
+*.jks
+*.keystore
+.env
 build-error.txt

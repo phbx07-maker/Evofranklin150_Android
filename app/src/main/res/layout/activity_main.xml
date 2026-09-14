@@ -23,13 +23,26 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="EvoFranklin"
-                    android:textColor="#FFFFFF"
-                    android:textSize="28sp"
-                    android:textStyle="bold"/>
+                <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_evo_logo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EvoFranklin"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+</LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,7 +110,7 @@
             android:columnCount="3">
 
             <Button
-                android:id="@+id/btnPhone"
+                android:id="@+id/btnPhone" android:drawableTop="@drawable/ic_phone"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -108,7 +121,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnBrowser"
+                android:id="@+id/btnBrowser" android:drawableTop="@drawable/ic_browser"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -119,7 +132,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnApk"
+                android:id="@+id/btnApk" android:drawableTop="@drawable/ic_apk"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -130,7 +143,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnWhatsapp"
+                android:id="@+id/btnWhatsapp" android:drawableTop="@drawable/ic_chat"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -141,7 +154,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnFacebook"
+                android:id="@+id/btnFacebook" android:drawableTop="@drawable/ic_social"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -152,7 +165,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnInstagram"
+                android:id="@+id/btnInstagram" android:drawableTop="@drawable/ic_social"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -162,7 +175,7 @@
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"/>
             <Button
-                android:id="@+id/btnWhatsappBusiness"
+                android:id="@+id/btnWhatsappBusiness" android:drawableTop="@drawable/ic_chat"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -173,7 +186,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnTelegram"
+                android:id="@+id/btnTelegram" android:drawableTop="@drawable/ic_chat"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -184,7 +197,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnMessenger"
+                android:id="@+id/btnMessenger" android:drawableTop="@drawable/ic_chat"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -195,7 +208,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
-                android:id="@+id/btnDiscord"
+                android:id="@+id/btnDiscord" android:drawableTop="@drawable/ic_chat"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"
@@ -204,10 +217,22 @@
                 android:text="DISCORD"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"/>
+            <Button
+                android:id="@+id/btnChatGPT"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_card"
+                android:drawableTop="@drawable/ic_chat"
+                android:text="CHATGPT"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"/>
+
 
 
             <Button
-                android:id="@+id/btnSettings"
+                android:id="@+id/btnSettings" android:drawableTop="@drawable/ic_settings"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_columnWeight="1"

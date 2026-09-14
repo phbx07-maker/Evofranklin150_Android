@@ -58,9 +58,12 @@ public class MainActivity extends Activity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progress.setProgress(newProgress);
-                progress.setVisibility(
-                        newProgress >= 100 ? View.GONE : View.VISIBLE
-                );
+
+                if (newProgress >= 100) {
+                    progress.setVisibility(View.GONE);
+                } else {
+                    progress.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -83,29 +86,36 @@ public class MainActivity extends Activity {
                 });
 
         findViewById(R.id.btnReload)
-                .setOnClickListener(v -> webView.reload());
+                .setOnClickListener(v -> {
+                    streamStatus.setText("STREAM CONNECTING");
+                    webView.reload();
+                });
 
-        findViewById(R.id.btnBrowser).setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(HOME_URL));
-            startActivity(intent);
-        });
+        findViewById(R.id.btnBrowser)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(HOME_URL)
+                    );
+                    startActivity(intent);
+                });
 
-        findViewById(R.id.btnApk).setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("application/vnd.android.package-archive");
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        findViewById(R.id.btnApk)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.setType("application/vnd.android.package-archive");
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(
-                        this,
-                        "APK installer belum tersedia",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(
+                                this,
+                                "APK installer belum tersedia",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
 
         findViewById(R.id.btnWhatsapp)
                 .setOnClickListener(v ->
@@ -135,19 +145,27 @@ public class MainActivity extends Activity {
                 .setOnClickListener(v ->
                         launchPackage("com.discord", "Discord"));
 
-        findViewById(R.id.btnSettings)
+        findViewById(R.id.btnChatGPT)
                 .setOnClickListener(v ->
-                        startActivity(
-                                new Intent(Settings.ACTION_SETTINGS)
-                        ));
+                        launchPackage("com.openai.chatgpt", "ChatGPT"));
+
+        findViewById(R.id.btnSettings)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                    startActivity(intent);
+                });
 
         showDesktop();
     }
 
     private void openVirtualPhone() {
         streamStatus.setText("STREAM CONNECTING");
+
         desktop.setVisibility(View.GONE);
         webContainer.setVisibility(View.VISIBLE);
+
+        webView.stopLoading();
+        webView.clearCache(false);
         webView.loadUrl(HOME_URL);
     }
 
@@ -162,23 +180,50 @@ public class MainActivity extends Activity {
 
         if (intent != null) {
             startActivity(intent);
-        } else {
-            Toast.makeText(
-                    this,
-                    appName + " belum terinstall",
-                    Toast.LENGTH_SHORT
-            ).show();
+            return;
+        }
+
+        try {
+            Intent storeIntent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + packageName)
+            );
+
+            startActivity(storeIntent);
+
+        } catch (Exception e) {
+
+            try {
+                Intent webIntent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                                "https://play.google.com/store/apps/details?id="
+                                        + packageName
+                        )
+                );
+
+                startActivity(webIntent);
+
+            } catch (Exception ex) {
+                Toast.makeText(
+                        this,
+                        appName + " belum tersedia",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
         }
     }
 
     @Override
     public void onBackPressed() {
         if (webContainer.getVisibility() == View.VISIBLE) {
+
             if (webView.canGoBack()) {
                 webView.goBack();
             } else {
                 showDesktop();
             }
+
         } else {
             super.onBackPressed();
         }

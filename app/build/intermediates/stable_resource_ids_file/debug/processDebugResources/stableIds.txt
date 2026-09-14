@@ -1,0 +1,5 @@
+com.evofranklin.app:layout/activity_main = 0x7f020000
+com.evofranklin.app:style/AppTheme = 0x7f030000
+com.evofranklin.app:id/webview = 0x7f010001
+com.evofranklin.app:xml/network_security_config = 0x7f040000
+com.evofranklin.app:id/progress = 0x7f010000

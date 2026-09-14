@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -22,6 +23,7 @@ public class MainActivity extends Activity {
     private ProgressBar progress;
     private View desktop;
     private View webContainer;
+    private TextView streamStatus;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -33,6 +35,7 @@ public class MainActivity extends Activity {
         webContainer = findViewById(R.id.webContainer);
         webView = findViewById(R.id.webview);
         progress = findViewById(R.id.progress);
+        streamStatus = findViewById(R.id.streamStatus);
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -44,7 +47,12 @@ public class MainActivity extends Activity {
                 WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         );
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                streamStatus.setText("STREAM ONLINE");
+            }
+        });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -56,21 +64,33 @@ public class MainActivity extends Activity {
             }
         });
 
-        // CONNECT / VIRTUAL PHONE
-        findViewById(R.id.btnConnect).setOnClickListener(v -> openVirtualPhone());
-        findViewById(R.id.btnPhone).setOnClickListener(v -> openVirtualPhone());
+        findViewById(R.id.btnConnect)
+                .setOnClickListener(v -> openVirtualPhone());
 
-        // HOME
-        findViewById(R.id.btnHome).setOnClickListener(v -> showDesktop());
+        findViewById(R.id.btnPhone)
+                .setOnClickListener(v -> openVirtualPhone());
 
-        // BROWSER
+        findViewById(R.id.btnHome)
+                .setOnClickListener(v -> showDesktop());
+
+        findViewById(R.id.btnBack)
+                .setOnClickListener(v -> {
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                    } else {
+                        showDesktop();
+                    }
+                });
+
+        findViewById(R.id.btnReload)
+                .setOnClickListener(v -> webView.reload());
+
         findViewById(R.id.btnBrowser).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(HOME_URL));
             startActivity(intent);
         });
 
-        // APK PICKER
         findViewById(R.id.btnApk).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("application/vnd.android.package-archive");
@@ -79,40 +99,56 @@ public class MainActivity extends Activity {
             try {
                 startActivity(intent);
             } catch (Exception e) {
-                Toast.makeText(this,
+                Toast.makeText(
+                        this,
                         "APK installer belum tersedia",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
 
-        // WHATSAPP
-        findViewById(R.id.btnWhatsapp).setOnClickListener(v ->
-                launchPackage("com.whatsapp", "WhatsApp"));
+        findViewById(R.id.btnWhatsapp)
+                .setOnClickListener(v ->
+                        launchPackage("com.whatsapp", "WhatsApp"));
 
-        // FACEBOOK
-        findViewById(R.id.btnFacebook).setOnClickListener(v ->
-                launchPackage("com.facebook.katana", "Facebook"));
+        findViewById(R.id.btnWhatsappBusiness)
+                .setOnClickListener(v ->
+                        launchPackage("com.whatsapp.w4b", "WhatsApp Business"));
 
-        // INSTAGRAM
-        findViewById(R.id.btnInstagram).setOnClickListener(v ->
-                launchPackage("com.instagram.android", "Instagram"));
+        findViewById(R.id.btnTelegram)
+                .setOnClickListener(v ->
+                        launchPackage("org.telegram.messenger", "Telegram"));
 
-        // SETTINGS
-        findViewById(R.id.btnSettings).setOnClickListener(v -> {
-            Intent intent = new Intent(Settings.ACTION_SETTINGS);
-            startActivity(intent);
-        });
+        findViewById(R.id.btnFacebook)
+                .setOnClickListener(v ->
+                        launchPackage("com.facebook.katana", "Facebook"));
+
+        findViewById(R.id.btnMessenger)
+                .setOnClickListener(v ->
+                        launchPackage("com.facebook.orca", "Messenger"));
+
+        findViewById(R.id.btnInstagram)
+                .setOnClickListener(v ->
+                        launchPackage("com.instagram.android", "Instagram"));
+
+        findViewById(R.id.btnDiscord)
+                .setOnClickListener(v ->
+                        launchPackage("com.discord", "Discord"));
+
+        findViewById(R.id.btnSettings)
+                .setOnClickListener(v ->
+                        startActivity(
+                                new Intent(Settings.ACTION_SETTINGS)
+                        ));
 
         showDesktop();
     }
 
     private void openVirtualPhone() {
+        streamStatus.setText("STREAM CONNECTING");
         desktop.setVisibility(View.GONE);
         webContainer.setVisibility(View.VISIBLE);
-
-        if (webView.getUrl() == null) {
-            webView.loadUrl(HOME_URL);
-        }
+        webView.loadUrl(HOME_URL);
     }
 
     private void showDesktop() {
@@ -138,13 +174,11 @@ public class MainActivity extends Activity {
     @Override
     public void onBackPressed() {
         if (webContainer.getVisibility() == View.VISIBLE) {
-
             if (webView.canGoBack()) {
                 webView.goBack();
             } else {
                 showDesktop();
             }
-
         } else {
             super.onBackPressed();
         }
